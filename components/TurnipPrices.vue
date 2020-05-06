@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
     <div class="col-span-2 sm:col-span-3 md:col-span-6 p-4 bg-white rounded-lg">
-      <div class="text-sm text-gray-700">
+      <div class="text-sm text-green-700">
         購入金額
       </div>
       <input
@@ -14,7 +14,7 @@
 
     <div v-for="n in 6" :key="n" class="p-2 bg-white rounded-lg">
       <div v-for="m in 2" :key="m" class="p-2">
-        <div class="text-sm text-gray-700">
+        <div class="text-sm text-green-700">
           {{ weekDay[n - 1] + '曜日:' + ((m - 1) % 2 === 0 ? '午前' : '午後') }}
         </div>
         <div>
@@ -124,10 +124,10 @@ export default {
 
 <style scoped>
 .input {
-  @apply bg-transparent border-b border-gray-300 px-2 block w-full text-gray-800 appearance-none leading-normal transition ease-in-out duration-150;
+  @apply bg-transparent border-b border-gray-300 px-2 block w-full text-gray-800 appearance-none leading-normal transition ease-in-out duration-300;
 }
 
 .input:focus {
-  @apply outline-none border-blue-400;
+  @apply outline-none border-green-500;
 }
 </style>

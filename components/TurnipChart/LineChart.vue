@@ -8,8 +8,7 @@ export default {
   props: {
     options: {
       type: Object,
-      required: false,
-      default() {}
+      default: null
     }
   },
   mounted() {

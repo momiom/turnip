@@ -1,16 +1,44 @@
 <template>
   <div class="container mx-auto px-4 py-4">
     <div class="grid grid-cols-1 gap-4">
-      <div class="text-2xl text-center text-gray-800">
+      <div class="text-2xl text-center text-green-800">
         Turnip Clculator
       </div>
 
-      <turnip-chart
-        class="rounded-lg bg-paper-yellow p-2"
-        :chart-data="datacollection"
-        :options="chartOptions"
-        :style="chartStyles"
-      />
+      <div class="grid grid-cols-4 gap-4 p-4 bg-green-400 rounded-lg">
+        <div class="col-span-4 flex items-stretch">
+          <div class="flex-1 rounded-lg bg-green-500 p-1 mx-1 bg-opacity-50">
+            <div
+              class="text-center align-middle text-white text-opacity-50 text-sm"
+            >
+              ゆらゆら<br />上下
+            </div>
+          </div>
+          <div class="flex-1 rounded-lg bg-green-500 p-1 mx-1 bg-opacity-50">
+            <div
+              class="text-center align-middle text-white text-opacity-50 text-sm"
+            >
+              ちょっと<br />上昇
+            </div>
+          </div>
+          <div class="flex-1 rounded-lg bg-green-500 p-1 mx-1">
+            <div class="text-center align-middle text-white text-sm">
+              おおきく<br />上昇
+            </div>
+          </div>
+          <div class="flex-1 rounded-lg bg-green-500 p-1 mx-1 bg-opacity-50">
+            <div
+              class="text-center align-middle text-white text-opacity-50 text-sm"
+            >
+              どんどん<br />下落
+            </div>
+          </div>
+        </div>
+        <turnip-pattern-chart
+          :chart-pattern="patternType"
+          class="col-span-4 md:col-start-2 md:col-span-2 bg-green-600 p-2 rounded-lg"
+        />
+      </div>
 
       <div class="container mx-auto p-4 bg-green-400 rounded-lg">
         <turnip-prices v-model="filter" />
@@ -21,31 +49,25 @@
 
 <script>
 import TurnipPrices from '~/components/TurnipPrices'
-import TurnipChart from '~/components/TurnipChart'
+import TurnipPatternChart from '~/components/TurnipChart/TurnipPatternChart'
 
 import { possiblePatterns } from '~/utils/patterns'
+
+const PATTERN_TYPE = {
+  highSpike: 0,
+  smallSpike: 1,
+  middleSpike: 2,
+  consistentlyDecreasing: 3
+}
 
 export default {
   components: {
     TurnipPrices,
-    TurnipChart
+    TurnipPatternChart
   },
   data() {
     return {
-      filter: [101, 58, 54, 133, 137],
-      // filter: [],
-      datacollection: {},
-      chartOptions: {
-        legend: {
-          display: false
-        },
-        elements: {
-          point: {
-            radius: 0
-          }
-        }
-      },
-      chartStyles: {}
+      filter: [101, 58, 54, 133, 137]
     }
   },
 
@@ -59,44 +81,14 @@ export default {
       }
 
       return patterns
+    },
+
+    patternType() {
+      return PATTERN_TYPE.highSpike
     }
   },
 
-  mounted() {
-    this.fillData()
-  },
-
   methods: {
-    updateChart() {},
-    fillData() {
-      this.datacollection = {
-        fill: false,
-        labels: [
-          '月:午前',
-          '月:午後',
-          '火:午前',
-          '火:午後',
-          '水:午前',
-          '水:午後',
-          '木:午前',
-          '木:午後',
-          '金:午前',
-          '金:午後',
-          '土:午前',
-          '土:午後'
-        ],
-        datasets: [
-          {
-            fill: false,
-            // backgroundColor: '#f87979',
-            data: this.filter
-          }
-        ]
-      }
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-    },
     debounce(fn, interval) {
       let timer
       return function() {
