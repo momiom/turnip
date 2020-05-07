@@ -2,16 +2,16 @@
   <line-chart
     :chart-data="dataCollection"
     :options="options"
-    style="position: relative; height: 10vh; min-height: 80px"
+    :style="chartStyles"
   />
 </template>
 <script>
 import LineChart from './LineChart'
 
 const PATTERN_TYPE = {
-  highSpike: 0,
-  smallSpike: 1,
-  middleSpike: 2,
+  wave: 0,
+  middleSpike: 1,
+  highSpike: 2,
   consistentlyDecreasing: 3
 }
 
@@ -23,6 +23,12 @@ export default {
     chartPattern: {
       type: Number,
       default: 0
+    },
+    chartStyles: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -57,6 +63,10 @@ export default {
               display: false,
               gridLines: {
                 display: false
+              },
+              ticks: {
+                min: 10,
+                max: 700
               }
             }
           ]
@@ -66,9 +76,7 @@ export default {
   },
   computed: {
     dataCollection() {
-      console.debug('chart type: ', this.chartPattern)
       if (this.chartPattern === PATTERN_TYPE.highSpike) {
-        console.debug('Render high spike chart')
         return {
           labels: [0, 1, 2, 3, 4, 5],
           datasets: [
@@ -84,7 +92,6 @@ export default {
           ]
         }
       } else {
-        console.debug('Render sample chart')
         return {
           labels: [0, 1, 2, 3, 4, 5],
           datasets: [

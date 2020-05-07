@@ -1,7 +1,9 @@
 <template>
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-    <div class="col-span-2 sm:col-span-3 md:col-span-6 p-4 bg-white rounded-lg">
-      <div class="text-sm text-green-700">
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 p-4 bg-green-400 rounded-lg"
+  >
+    <div class="col-span-2 sm:col-span-3 md:col-span-6 p-2 bg-white rounded-lg">
+      <div class="text-sm text-green-900">
         購入金額
       </div>
       <input
@@ -12,9 +14,9 @@
       />
     </div>
 
-    <div v-for="n in 6" :key="n" class="p-2 bg-white rounded-lg">
+    <div v-for="n in 6" :key="n" class=" bg-white rounded-lg">
       <div v-for="m in 2" :key="m" class="p-2">
-        <div class="text-sm text-green-700">
+        <div class="text-sm text-green-900">
           {{ weekDay[n - 1] + '曜日:' + ((m - 1) % 2 === 0 ? '午前' : '午後') }}
         </div>
         <div>
@@ -59,30 +61,20 @@ export default {
     }
   },
   data() {
-    return {
-      rules: {
-        mustBeInt: (value) =>
-          value === '' ||
-          isNaN(parseInt(value)) === false ||
-          '数字を入れてください。'
-      }
-    }
+    return {}
   },
   computed: {
     prices: {
       get() {
-        console.debug('prices get: this.$props.filter', this.$props.filter)
         const buyPrice = this.$props.filter[0]
         let pricesPerDay = split(this.$props.filter.slice(1), 2)
         pricesPerDay = Array.from({ length: 6 }, (_, i) =>
           typeof pricesPerDay[i] !== 'undefined' ? pricesPerDay[i] : ['', '']
         )
-
-        console.debug('prices get: return', [buyPrice, ...pricesPerDay])
         return [buyPrice, ...pricesPerDay]
       },
       set(val) {
-        console.debug('val', val)
+        // 2次元配列を1次元配列に変換
         const filter = val.slice(1).reduce((pre, curr) => {
           if (curr.length !== 0) pre.push(...curr)
           return pre
@@ -94,28 +86,16 @@ export default {
       return ['月', '火', '水', '木', '金', '土']
     }
   },
-  pricesPerDay() {
-    // filter [購入金額, 月AM, 月PM, 火AM, 火PM ...]
-    // を↓に変換
-    // [
-    //   [月AM, 月PM],
-    //   [火AM, 火P],
-    //   ...
-    // ]
-    return split(this.filter.slice(1), 2)
-  },
 
   methods: {
-    updatePrices(value, n, m) {
-      value = parseInt(value)
+    updatePrices(e, n, m) {
+      const value = parseInt(e.target.value)
       const prices = this.prices.slice(0)
       if (n === 0) {
         prices[n] = value
       } else {
         prices[n][m - 1] = value
       }
-      console.debug('prices', prices)
-
       this.prices = prices
     }
   }
@@ -124,7 +104,7 @@ export default {
 
 <style scoped>
 .input {
-  @apply bg-transparent border-b border-gray-300 px-2 block w-full text-gray-800 appearance-none leading-normal transition ease-in-out duration-300;
+  @apply bg-transparent border-b rounded-none	border-gray-300 px-2 block w-full text-gray-800 appearance-none leading-normal transition ease-in-out duration-300;
 }
 
 .input:focus {
