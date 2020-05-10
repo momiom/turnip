@@ -7,7 +7,7 @@ export default {
     htmlAttrs: {
       lang: 'ja'
     },
-    title: process.env.npm_package_name || '',
+    title: 'カブ価予報 | あつまれど うぶつの森',
     meta: [
       { charset: 'utf-8' },
       { 'http-equiv': 'content-language', content: 'ja' },
@@ -15,7 +15,8 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content:
+          '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -60,6 +61,12 @@ export default {
   webfontloader: {
     google: {
       families: ['Kosugi+Maru']
+    }
+  },
+
+  pwa: {
+    meta: {
+      appleStatusBarStyle: 'black-translucent'
     }
   },
 
