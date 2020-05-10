@@ -67,6 +67,19 @@ export default {
   pwa: {
     meta: {
       appleStatusBarStyle: 'black-translucent'
+    },
+    manifest: {
+      name: 'カブ価予報 | あつまれど うぶつの森',
+      title: 'カブ価予報 | あつまれど うぶつの森',
+      'og:title': 'カブ価予報 | あつまれど うぶつの森',
+      description:
+        '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。',
+      'og:description':
+        '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。',
+      lang: 'ja',
+      theme_color: '#FFF9E2',
+      background_color: '#FFF9E2',
+      display: 'fullscreen'
     }
   },
 
