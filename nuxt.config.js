@@ -10,6 +10,7 @@ export default {
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
+      { 'http-equiv': 'content-language', content: 'ja' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
@@ -46,7 +47,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    'nuxt-webfontloader'
   ],
   devModules: ['@nuxtjs/tailwindcss'],
   /*
@@ -54,6 +56,13 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+
+  webfontloader: {
+    google: {
+      families: ['Kosugi+Maru']
+    }
+  },
+
   /*
    ** Build configuration
    */

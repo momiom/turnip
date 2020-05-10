@@ -18,8 +18,15 @@ module.exports = {
         green: {
           ...colors.green,
           '400': '#8CD790'
+        },
+        yellow: {
+          ...colors.yellow,
+          '150': '#FFF9E2'
         }
       }
+    },
+    fontFamily: {
+      title: ['"Kosugi Maru"']
     }
   },
   variants: {},

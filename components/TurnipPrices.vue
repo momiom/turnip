@@ -4,12 +4,12 @@
   >
     <div class="col-span-2 sm:col-span-3 md:col-span-6 p-2 bg-white rounded-lg">
       <div class="text-sm text-green-900">
-        購入金額
+        購入価格
       </div>
       <input
         class="input"
         :value="prices[0]"
-        type="number"
+        type="tel"
         @input="updatePrices($event, 0)"
       />
     </div>
@@ -22,7 +22,7 @@
         <div>
           <input
             class="input"
-            type="number"
+            type="tel"
             :value="prices[n][m - 1]"
             @input="updatePrices($event, n, m)"
           />
@@ -46,10 +46,10 @@ const split = (array, n) => {
 
 export default {
   model: {
-    prop: 'filter'
+    prop: 'currentPrices'
   },
   props: {
-    filter: {
+    currentPrices: {
       type: Array,
       required: true,
       validator(value) {
@@ -66,8 +66,8 @@ export default {
   computed: {
     prices: {
       get() {
-        const buyPrice = this.$props.filter[0]
-        let pricesPerDay = split(this.$props.filter.slice(1), 2)
+        const buyPrice = this.$props.currentPrices[0]
+        let pricesPerDay = split(this.$props.currentPrices.slice(1), 2)
         pricesPerDay = Array.from({ length: 6 }, (_, i) =>
           typeof pricesPerDay[i] !== 'undefined' ? pricesPerDay[i] : ['', '']
         )
@@ -75,11 +75,11 @@ export default {
       },
       set(val) {
         // 2次元配列を1次元配列に変換
-        const filter = val.slice(1).reduce((pre, curr) => {
+        const currentPrices = val.slice(1).reduce((pre, curr) => {
           if (curr.length !== 0) pre.push(...curr)
           return pre
         }, [])
-        this.$emit('input', [val[0], ...filter])
+        this.$emit('input', [val[0], ...currentPrices])
       }
     },
     weekDay() {
@@ -89,7 +89,11 @@ export default {
 
   methods: {
     updatePrices(e, n, m) {
+      console.debug('TurnipPrices.vue updatePrices() e: ', e)
       const value = parseInt(e.target.value)
+      if (isNaN(value)) {
+        return
+      }
       const prices = this.prices.slice(0)
       if (n === 0) {
         prices[n] = value

@@ -2,12 +2,17 @@
   <div class="container mx-auto px-4 py-4">
     <div class="grid grid-cols-1 gap-4">
       <div class="text-2xl text-center text-green-800">
-        Turnip Clculator
+        カブ価予報
       </div>
+
+      <turnip-prices v-model="currentPrices" />
 
       <result-board :turnip-pattern-type="patternType" />
 
-      <turnip-prices v-model="filter" />
+      <prediction-detail
+        v-model="patternType"
+        :current-prices="currentPrices"
+      />
     </div>
   </div>
 </template>
@@ -15,43 +20,35 @@
 <script>
 import TurnipPrices from '~/components/TurnipPrices'
 import ResultBoard from '~/components/ResultBoard'
+import PredictionDetail from '~/components/PredictionDetail'
 
-import { possiblePatterns } from '~/utils/patterns'
-
-const PATTERN_TYPE = {
-  wave: 0,
-  middleSpike: 1,
-  highSpike: 2,
-  consistentlyDecreasing: 3
-}
+// const PATTERN_TYPE = {
+//   wave: 0,
+//   middleSpike: 1,
+//   highSpike: 2,
+//   consistentlyDecreasing: 3
+// }
 
 export default {
   components: {
     TurnipPrices,
-    ResultBoard
+    ResultBoard,
+    PredictionDetail
   },
   data() {
     return {
-      filter: [101, 58, 54, 133, 137]
+      // currentPrices: [101, 58, 54, 133, 137],
+      // currentPrices: [96, 74, 69], // middle spike
+      currentPrices: [96, 83, 79, 76, 72, 119], // high spike
+      patternType: 0
     }
   },
 
-  computed: {
-    patterns() {
-      const filter = this.filter.slice(0)
-      let patterns = possiblePatterns(filter)
-      const patternCount = patterns.reduce((acc, cur) => acc + cur.length, 0)
-      if (patternCount === 0) {
-        patterns = possiblePatterns([0, ...filter.slice(1)])
-      }
-
-      return patterns
-    },
-
-    patternType() {
-      return PATTERN_TYPE.highSpike
-    }
-  },
+  // computed: {
+  //   patternType() {
+  //     return PATTERN_TYPE.highSpike
+  //   }
+  // },
 
   methods: {
     debounce(fn, interval) {
