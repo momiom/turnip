@@ -16,7 +16,7 @@
 
       <vue-disqus
         shortname="turnip-forecast"
-        :identifier="index"
+        identifier="index"
         url="https://turnip-forecast.netlify.app/"
       ></vue-disqus>
     </div>
