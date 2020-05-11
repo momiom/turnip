@@ -13,6 +13,12 @@
         v-model="patternType"
         :current-prices="currentPrices"
       />
+
+      <vue-disqus
+        shortname="turnip-forecast"
+        :identifier="index"
+        url="https://turnip-forecast.netlify.app/"
+      ></vue-disqus>
     </div>
   </div>
 </template>
