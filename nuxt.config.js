@@ -32,7 +32,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/disqus'],
+  plugins: ['~/plugins/disqus', '~/plugins/utils'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -60,7 +60,10 @@ export default {
 
   webfontloader: {
     google: {
-      families: ['Kosugi+Maru']
+      families: ['Kosugi Maru'],
+      urls: [
+        'https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=auto'
+      ]
     }
   },
 

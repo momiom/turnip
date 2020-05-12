@@ -9,10 +9,7 @@
 
       <result-board :turnip-pattern-type="patternType" />
 
-      <prediction-detail
-        v-model="patternType"
-        :current-prices="currentPrices"
-      />
+      <forecast-detail :current-prices="debounceCurrentPrices" />
 
       <vue-disqus
         shortname="turnip-forecast"
@@ -26,45 +23,38 @@
 <script>
 import TurnipPrices from '~/components/TurnipPrices'
 import ResultBoard from '~/components/ResultBoard'
-import PredictionDetail from '~/components/PredictionDetail'
-
-// const PATTERN_TYPE = {
-//   wave: 0,
-//   middleSpike: 1,
-//   highSpike: 2,
-//   consistentlyDecreasing: 3
-// }
+import ForecastDetail from '~/components/ForecastDetail'
 
 export default {
   components: {
     TurnipPrices,
     ResultBoard,
-    PredictionDetail
+    ForecastDetail
   },
   data() {
     return {
       // currentPrices: [101, 58, 54, 133, 137],
       // currentPrices: [96, 74, 69], // middle spike
-      currentPrices: [96, 83, 79, 76, 72, 119], // high spike
-      patternType: 0
+      // currentPrices: [96, 83, 79, 76, 72, 119], // high spike
+      currentPrices: Array.from({ length: 13 }, () => ''),
+      patternType: 0,
+      debounceCurrentPrices: []
     }
   },
 
-  // computed: {
-  //   patternType() {
-  //     return PATTERN_TYPE.highSpike
-  //   }
-  // },
+  watch: {
+    currentPrices() {
+      this.debouncedCurrentPrices()
+    }
+  },
+
+  created() {
+    this.debouncedCurrentPrices = this.$debounce(this.returnCurrentPrices, 800)
+  },
 
   methods: {
-    debounce(fn, interval) {
-      let timer
-      return function() {
-        clearTimeout(timer)
-        timer = setTimeout(function() {
-          fn()
-        }, interval)
-      }
+    returnCurrentPrices() {
+      this.debounceCurrentPrices = this.currentPrices
     }
   }
 }
