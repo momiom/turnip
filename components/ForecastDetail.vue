@@ -9,7 +9,7 @@ import TurnipPredictionChart from './TurnipChart/TurnipPredictionChart'
 import {
   possiblePatterns,
   patternReducer,
-  averageReducer,
+  // averageReducer,
   minWeekReducer
 } from '~/utils/patterns'
 
@@ -18,9 +18,7 @@ const zip = (...args) => {
   const shortest =
     args.length === 0
       ? []
-      : args.reduce(function(a, b) {
-          return a.length < b.length ? a : b
-        })
+      : args.reduce((a, b) => (a.length < b.length ? a : b))
   return shortest.map((_, i) => {
     return args.map((array) => {
       return array[i]
@@ -33,18 +31,10 @@ export default {
     TurnipPredictionChart
   },
 
-  model: {
-    prop: 'patternType'
-  },
-
   props: {
     currentPrices: {
       type: Array,
       default: null
-    },
-    patternType: {
-      type: Number,
-      default: 0
     }
   },
 
@@ -90,7 +80,7 @@ export default {
     },
 
     chartData() {
-      console.debug(this.currentPrices)
+      // console.debug(this.currentPrices)
 
       let patterns = possiblePatterns(this.currentPrices)
 
@@ -98,19 +88,19 @@ export default {
       if (patternCount === 0)
         patterns = possiblePatterns([0, ...this.currentPrices.slice(1)])
 
-      console.debug('patterns', patterns)
+      // console.debug('patterns', patterns)
 
       const minMaxPattern = patternReducer(patterns)
       const minMaxData = zip(...minMaxPattern)
-      const avgPattern = patternReducer(patterns, averageReducer)
-      const avgData = zip(...avgPattern)
+      // const avgPattern = patternReducer(patterns, averageReducer)
+      // const avgData = zip(...avgPattern)
       const [minWeekValue] = patternReducer(patterns, minWeekReducer)
 
-      console.debug('minMaxPattern', minMaxPattern)
-      console.debug('minMaxData', minMaxData)
-      console.debug('avgPattern', avgPattern)
-      console.debug('avgData', avgData)
-      console.debug('minWeekValue', minWeekValue)
+      // console.debug('minMaxPattern', minMaxPattern)
+      // console.debug('minMaxData', minMaxData)
+      // console.debug('avgPattern', avgPattern)
+      // console.debug('avgData', avgData)
+      // console.debug('minWeekValue', minWeekValue)
 
       const result = [
         {
@@ -173,7 +163,7 @@ export default {
           fill: 3
         }
       ]
-      console.debug('result: ', JSON.stringify(result))
+      // console.debug('result: ', JSON.stringify(result))
       return {
         datasets: result,
         labels: [
