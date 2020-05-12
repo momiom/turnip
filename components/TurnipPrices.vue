@@ -66,14 +66,8 @@ export default {
   computed: {
     prices: {
       get() {
-        console.debug(
-          `computed prices get(): this.$props.currentPrices: ${this.$props.currentPrices}`
-        )
         const buyPrice = this.$props.currentPrices[0]
         const pricesPerDay = split(this.$props.currentPrices.slice(1), 2)
-        // pricesPerDay = Array.from({ length: 6 }, (_, i) =>
-        //   typeof pricesPerDay[i] !== 'undefined' ? pricesPerDay[i] : ['', '']
-        // )
         return [buyPrice, ...pricesPerDay]
       },
       set(val) {
@@ -92,9 +86,6 @@ export default {
 
   methods: {
     updatePrices(e, n, m) {
-      console.debug(
-        `TurnipPrices.vue updatePrices() e.target.value: ${e.target.value}, n: ${n},  m: ${m}`
-      )
       let value = parseInt(e.target.value)
       if (isNaN(value)) {
         value = ''
@@ -106,7 +97,6 @@ export default {
         prices[n][m - 1] = value
       }
       this.prices = prices
-      console.debug('prices: ', prices)
     }
   }
 }
