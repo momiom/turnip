@@ -26,7 +26,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      title: ['"Kosugi Maru"']
+      body: ['"Kosugi Maru"']
     }
   },
   variants: {},
