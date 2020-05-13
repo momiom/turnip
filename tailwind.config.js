@@ -14,14 +14,14 @@ module.exports = {
     },
     extend: {
       colors: {
-        'paper-yellow': '#fffff6',
+        'main-yellow': '#FFF9E2',
+        'main-green': '#DDEBCA',
+        'main-brown': '#827157',
+        'attention-pink': '#E784BB',
+        'maney-blue': '#39B7AE',
         green: {
           ...colors.green,
-          '400': '#8CD790'
-        },
-        yellow: {
-          ...colors.yellow,
-          '150': '#FFF9E2'
+          '550': '#85AD75'
         }
       }
     },
