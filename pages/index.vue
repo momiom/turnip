@@ -93,9 +93,11 @@ export default {
   },
 
   watch: {
-    // currentPricesが更新されたとき、
-    // 設定時間後にthis.debounceCurrentPricesを更新する関数を呼び出す関数を呼び出し
     currentPrices() {
+      // localstrageに保存
+      localStorage.setItem('currentPrices', JSON.stringify(this.currentPrices))
+
+      // 設定時間後にthis.debounceCurrentPricesを更新する関数を呼び出す関数を呼び出し
       this.debouncedCurrentPrices()
     }
   },
@@ -105,14 +107,30 @@ export default {
     this.debouncedCurrentPrices = this.$debounce(this.updateCurrentPrices, 800)
   },
 
+  mounted() {
+    // localstrageの初期化
+    this.initLocalstrage()
+  },
+
   methods: {
     // debounce関数に渡す関数
     // 設定時間後に呼び出されthis.debounceCurrentPricesを更新する
     updateCurrentPrices() {
       this.debounceCurrentPrices = this.currentPrices
     },
+
     clearPrices() {
+      // lengthが13の空文字の配列を生成
       this.currentPrices = Array.from({ length: 13 }, () => '')
+    },
+
+    initLocalstrage() {
+      const currentPrices = JSON.parse(localStorage.getItem('currentPrices'))
+      if (currentPrices) {
+        this.currentPrices = currentPrices
+      } else {
+        this.currentPrices = Array.from({ length: 13 }, () => '')
+      }
     }
   }
 }
