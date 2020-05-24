@@ -80,9 +80,6 @@ export default {
   },
   data() {
     return {
-      // currentPrices: [101, 58, 54, 133, 137],
-      // currentPrices: [96, 74, 69], // middle spike
-      // currentPrices: [96, 83, 79, 76, 72, 119], // high spike
       currentPrices: Array.from({ length: 13 }, () => ''),
       turnipPatternObj: {
         type: -1,
@@ -96,17 +93,22 @@ export default {
   },
 
   watch: {
+    // currentPricesが更新されたとき、
+    // 設定時間後にthis.debounceCurrentPricesを更新する関数を呼び出す関数を呼び出し
     currentPrices() {
       this.debouncedCurrentPrices()
     }
   },
 
   created() {
-    this.debouncedCurrentPrices = this.$debounce(this.returnCurrentPrices, 800)
+    // currentPricesをdebounceする関数を登録
+    this.debouncedCurrentPrices = this.$debounce(this.updateCurrentPrices, 800)
   },
 
   methods: {
-    returnCurrentPrices() {
+    // debounce関数に渡す関数
+    // 設定時間後に呼び出されthis.debounceCurrentPricesを更新する
+    updateCurrentPrices() {
       this.debounceCurrentPrices = this.currentPrices
     },
     clearPrices() {
