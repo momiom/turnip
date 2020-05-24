@@ -18,7 +18,10 @@ module.exports = {
         'main-green': '#DDEBCA',
         'main-brown': '#827157',
         'attention-pink': '#E784BB',
-        'maney-blue': '#39B7AE',
+        'money-blue': {
+          default: '#39B7AE',
+          dark: '#26827b'
+        },
         green: {
           ...colors.green,
           '550': '#85AD75'
