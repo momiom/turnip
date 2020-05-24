@@ -35,7 +35,24 @@ const throttle = function(fn, delay) {
   }
 }
 
+const zip = (...args) => {
+  args = [].slice.call(args)
+  const shortest =
+    args.length === 0
+      ? []
+      : args.reduce((a, b) => (a.length < b.length ? a : b))
+  return shortest.map((_, i) => {
+    return args.map((array) => {
+      return array[i]
+    })
+  })
+}
+
+const isUndefined = (x) => typeof x === 'undefined'
+
 export default ({}, inject) => {
   inject('debounce', debounce)
   inject('throttle', throttle)
+  inject('zip', zip)
+  inject('isUndefined', isUndefined)
 }

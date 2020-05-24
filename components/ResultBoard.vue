@@ -1,39 +1,40 @@
 <template>
-  <div class="grid grid-cols-4 gap-2 p-4 bg-green-400 rounded-lg">
-    <div class="col-span-4 flex items-stretch">
-      <div
-        v-for="(msg, i) in patternMsg"
-        :key="msg"
-        class="flex-1 rounded-lg bg-green-500 p-1 mx-1"
-        :class="{ 'bg-opacity-50': i !== turnipPatternType }"
-      >
-        <div
-          class="text-center align-middle text-white text-sm leading-tight"
-          :class="{ 'text-opacity-50': i !== turnipPatternType }"
-          v-html="msg"
-        ></div>
-      </div>
-    </div>
+  <div class="grid grid-cols-4 gap-4 p-6 bg-main-green rounded-lg">
+    <result-board-panel
+      class="flex items-stretch md:grid md:grid-cols-2 md:gap-4 col-span-4 md:col-span-2"
+      :pattern-type="turnipPattern.type"
+    />
 
-    <turnip-pattern-chart
-      :chart-pattern="turnipPatternType"
-      class="col-span-4 md:col-start-2 md:col-span-2 bg-green-500 p-2 rounded-lg"
-      :chart-styles="styles"
+    <result-board-message
+      class="col-span-4 md:col-start-3 md:col-span-2 bg-main-yellow p-4 rounded-lg"
+      :pattern-type="turnipPattern.type"
+      :high-spike-day="turnipPattern.highSpikeDay"
+      :min-price="turnipPattern.minPrice"
+      :max-price="turnipPattern.maxPrice"
     />
   </div>
 </template>
 
 <script>
-import TurnipPatternChart from '~/components/TurnipChart/TurnipPatternChart'
+import ResultBoardMessage from '~/components/ResultBoardMessage'
+import ResultBoardPanel from '~/components/ResultBoardPanel'
 
 export default {
   components: {
-    TurnipPatternChart
+    ResultBoardMessage,
+    ResultBoardPanel
   },
   props: {
-    turnipPatternType: {
-      type: Number,
-      default: 0
+    turnipPatternObj: {
+      type: Object,
+      default: () => {
+        return {
+          type: -1,
+          highSpikeDay: null,
+          minPrice: 0,
+          maxPrice: 0
+        }
+      }
     }
   },
   data() {
@@ -42,13 +43,25 @@ export default {
         position: 'relative',
         height: '8vh'
         // 'min-height': '70px'
-      },
-      patternMsg: [
-        'ゆらゆら<br />上下',
-        'ちょっと<br />上昇',
-        'おおきく<br />上昇',
-        'どんどん<br />下落'
-      ]
+      }
+    }
+  },
+
+  computed: {
+    turnipPattern() {
+      let turnipPattern = {}
+      if (this.turnipPatternObj.type !== -1) {
+        turnipPattern = this.turnipPatternObj
+      } else {
+        turnipPattern = {
+          type: -1,
+          highSpikeDay: null,
+          minPrice: 0,
+          maxPrice: 0
+        }
+      }
+
+      return turnipPattern
     }
   }
 }

@@ -14,19 +14,22 @@ module.exports = {
     },
     extend: {
       colors: {
-        'paper-yellow': '#fffff6',
+        'main-yellow': '#FFF9E2',
+        'main-green': '#DDEBCA',
+        'main-brown': '#827157',
+        'attention-pink': '#E784BB',
+        'money-blue': {
+          default: '#39B7AE',
+          dark: '#26827b'
+        },
         green: {
           ...colors.green,
-          '400': '#8CD790'
-        },
-        yellow: {
-          ...colors.yellow,
-          '150': '#FFF9E2'
+          '550': '#85AD75'
         }
       }
     },
     fontFamily: {
-      title: ['"Kosugi Maru"']
+      body: ['"Kosugi Maru"']
     }
   },
   variants: {},

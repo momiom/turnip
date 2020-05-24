@@ -13,28 +13,30 @@ import {
   minWeekReducer
 } from '~/utils/patterns'
 
-const zip = (...args) => {
-  args = [].slice.call(args)
-  const shortest =
-    args.length === 0
-      ? []
-      : args.reduce((a, b) => (a.length < b.length ? a : b))
-  return shortest.map((_, i) => {
-    return args.map((array) => {
-      return array[i]
-    })
-  })
-}
-
 export default {
   components: {
     TurnipPredictionChart
   },
 
+  model: {
+    prop: 'turnipPatternObj'
+  },
+
   props: {
     currentPrices: {
       type: Array,
-      default: null
+      default: () => []
+    },
+    turnipPatternObj: {
+      type: Object,
+      default: () => {
+        return {
+          type: -1,
+          highSpikeDay: null,
+          minPrice: 0,
+          maxPrice: 0
+        }
+      }
     }
   },
 
@@ -66,41 +68,9 @@ export default {
       }
     }
   },
-
   computed: {
-    patterns() {
-      const currentPrices = this.currentPrices.slice(0)
-      let patterns = possiblePatterns(currentPrices)
-      const patternCount = patterns.reduce((acc, cur) => acc + cur.length, 0)
-      if (patternCount === 0) {
-        patterns = possiblePatterns([0, ...currentPrices.slice(1)])
-      }
-
-      return patterns
-    },
-
     chartData() {
-      // console.debug(this.currentPrices)
-
-      let patterns = possiblePatterns(this.currentPrices)
-
-      const patternCount = patterns.reduce((acc, cur) => acc + cur.length, 0)
-      if (patternCount === 0)
-        patterns = possiblePatterns([0, ...this.currentPrices.slice(1)])
-
-      // console.debug('patterns', patterns)
-
-      const minMaxPattern = patternReducer(patterns)
-      const minMaxData = zip(...minMaxPattern)
-      // const avgPattern = patternReducer(patterns, averageReducer)
-      // const avgData = zip(...avgPattern)
-      const [minWeekValue] = patternReducer(patterns, minWeekReducer)
-
-      // console.debug('minMaxPattern', minMaxPattern)
-      // console.debug('minMaxData', minMaxData)
-      // console.debug('avgPattern', avgPattern)
-      // console.debug('avgData', avgData)
-      // console.debug('minWeekValue', minWeekValue)
+      const { minMaxData, minWeekValue } = this.calcPattern
 
       const result = [
         {
@@ -146,11 +116,9 @@ export default {
         {
           label: '最低価格',
           data: minMaxData[0] || new Array(12).fill(null),
-          backgroundColor: '#88C9A1',
-          borderColor: '#88C9A1',
+          borderColor: '#A5D5A5',
           pointRadius: 0,
           pointHoverRadius: 0,
-          // fill: 3
           fill: false
         },
         {
@@ -163,7 +131,7 @@ export default {
           fill: 3
         }
       ]
-      // console.debug('result: ', JSON.stringify(result))
+
       return {
         datasets: result,
         labels: [
@@ -180,6 +148,102 @@ export default {
           '土:午前',
           '土:午後'
         ]
+      }
+    },
+
+    calcPattern() {
+      let patterns = possiblePatterns(this.currentPrices)
+
+      const patternCount = patterns.reduce((acc, cur) => acc + cur.length, 0)
+      if (patternCount === 0)
+        patterns = possiblePatterns([0, ...this.currentPrices.slice(1)])
+
+      const minMaxPattern = patternReducer(patterns)
+      const minMaxData = this.$zip(...minMaxPattern)
+      // const avgPattern = patternReducer(patterns, averageReducer)
+      // const avgData = zip(...avgPattern)
+      const [minWeekValue] = patternReducer(patterns, minWeekReducer)
+
+      this.updateTurnipPattern(patterns, minMaxData, minWeekValue)
+
+      return { minMaxData, minWeekValue }
+    }
+  },
+
+  methods: {
+    updateTurnipPattern(patterns, minMaxData, minPrice) {
+      // 購入価格、日毎の価格、予測パターンのいづれかが空の場合、予測不能として返す
+      const isEmptyBuyPrice =
+        this.currentPrices[0] === 0 || this.currentPrices[0] === ''
+      const isEmptyPrices = this.currentPrices
+        .slice(1)
+        .every((v) => v.length === 0)
+      const isEmptyPatterns = patterns.every((v) => v.length === 0)
+
+      if (isEmptyPrices || isEmptyPatterns || isEmptyBuyPrice) {
+        this.$emit('input', {
+          type: -1,
+          highSpikeDay: null,
+          minPrice: 0,
+          maxPrice: 0
+        })
+      } else {
+        const maxPrice = Math.max(...minMaxData[1])
+        const highSpikeDay = minMaxData[1].indexOf(maxPrice)
+
+        const possiblePatternLengths = patterns.map((v) => v.length)
+        const possiblePatternTypes = possiblePatternLengths.reduce(
+          (a, c, i) => {
+            c === Math.max(...possiblePatternLengths) && a.push(i)
+            return a
+          },
+          []
+        )
+
+        // this.turnipPattern = {
+        //     type: 0,
+        //     decreasingDay: 0,
+        //     highSpikeDay: 0,
+        //     minPrice: 0,
+        //     maxPrice: 0
+        //   }
+        // type: 0, msg: 'ゆらゆら<br />上下'
+        // type: 1, msg: 'おおきく<br />上昇'
+        // type: 2, msg: 'どんどん<br />下落'
+        // type: 3, msg: 'ちょっと<br />上昇'
+        let type = -1
+        if (possiblePatternTypes.length === 1) {
+          type = possiblePatternTypes[0]
+        } else if (possiblePatternTypes.length === 2) {
+          if (
+            !possiblePatternTypes.includes(1) &&
+            !possiblePatternTypes.includes(3)
+          ) {
+            type = -1
+          }
+          // middle, high ならしきい値以上をhighとして返す
+          // high 2 ~ 6
+          // middle 1.4 ~ 2
+          const buyPrice = this.currentPrices[0]
+          const threshold = maxPrice / buyPrice
+          if (threshold > 2) {
+            // high
+            type = 1
+          } else if (threshold < 2) {
+            // middle
+            type = 3
+          } else {
+            // Undeterminable
+            type = -1
+          }
+        }
+
+        this.$emit('input', {
+          type,
+          highSpikeDay,
+          minPrice,
+          maxPrice
+        })
       }
     }
   }
