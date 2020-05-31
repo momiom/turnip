@@ -46,8 +46,56 @@ export default {
         maintainAspectRatio: false,
         showLines: true,
         tooltips: {
+          enabled: true,
           intersect: false,
-          mode: 'index'
+          mode: 'index',
+          callbacks: {
+            title(tooltipItem, data) {
+              return tooltipItem[0].xLabel
+            },
+            label(tooltipItems, data) {
+              const currentDatasets = data.datasets[tooltipItems.datasetIndex]
+              const label = currentDatasets.label
+
+              // カブ価の範囲は最低〜最大の表記にする
+              if (label === 'カブ価の範囲') {
+                const min = currentDatasets.data[tooltipItems.index]
+                const max =
+                  data.datasets[tooltipItems.datasetIndex + 1].data[
+                    tooltipItems.index
+                  ]
+                return `${label}  ${min}ベル 〜 ${max}ベル`
+              }
+
+              // 最低カブ価は非表示
+              const newLabel = label === '最低カブ価' ? '' : label
+
+              return newLabel === ''
+                ? ''
+                : `${newLabel}  ${tooltipItems.yLabel}ベル`
+            },
+            labelColor(tooltipItems, chart) {
+              const data = chart.data.datasets[tooltipItems.datasetIndex]
+              const label = data.label
+              if (label === '購入カブ価') {
+                return {
+                  borderColor: '#7B6C53',
+                  backgroundColor: '#7B6C53'
+                }
+              }
+              if (label === '最低保証カブ価') {
+                return {
+                  borderColor: '#007D75',
+                  backgroundColor: '#007D75'
+                }
+              }
+
+              return {
+                borderColor: data.borderColor,
+                backgroundColor: data.backgroundColor
+              }
+            }
+          }
         },
         scales: {
           y: {
@@ -63,6 +111,15 @@ export default {
         elements: {
           line: {
             cubicInterpolationMode: 'monotone'
+          }
+        },
+        legend: {
+          display: true,
+          labels: {
+            filter(items, chartData) {
+              // 最低カブ価を非表示
+              return items.text !== '最低カブ価'
+            }
           }
         }
       }
@@ -103,32 +160,42 @@ export default {
           backgroundColor: '#EF8341',
           borderColor: '#EF8341'
         },
-        // {
-        //   label: '平均価格',
-        //   data: avgData[0]
-        //     ? avgData[0].map(Math.trunc)
-        //     : new Array(12).fill(null),
-        //   backgroundColor: '#F0E16F',
-        //   borderColor: '#F0E16F',
-        //   pointRadius: 0,
-        //   fill: false
-        // },
         {
-          label: '最低価格',
+          label: 'カブ価の範囲', // 最高カブ価
+          data: minMaxData[1] || new Array(12).fill(null),
+          backgroundColor: 'rgba(165, 213, 165, 0.7)',
+          borderColor: 'rgba(0, 0, 0, 0)',
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          fill: 2
+        },
+        {
+          label: '最低カブ価', // 最低カブ価 legend非表示
           data: minMaxData[0] || new Array(12).fill(null),
-          borderColor: '#A5D5A5',
+          borderColor: 'rgba(0, 0, 0, 0)',
           pointRadius: 0,
           pointHoverRadius: 0,
           fill: false
         },
         {
-          label: '最大価格',
-          data: minMaxData[1] || new Array(12).fill(null),
-          backgroundColor: '#A5D5A5',
-          borderColor: '#A5D5A5',
+          label: '購入カブ価',
+          data: new Array(12).fill(this.currentPrices[0] || null),
+          fill: true,
+          backgroundColor: 'transparent',
+          borderColor: '#7B6C53',
           pointRadius: 0,
           pointHoverRadius: 0,
-          fill: 3
+          borderDash: [5, 15]
+        },
+        {
+          label: '最低保証カブ価',
+          data: new Array(12).fill(minWeekValue || null),
+          fill: true,
+          backgroundColor: 'transparent',
+          borderColor: '#007D75',
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          borderDash: [3, 6]
         }
       ]
 

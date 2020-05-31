@@ -52,6 +52,7 @@
         shortname="turnip-forecast"
         identifier="index"
         url="https://turnip-forecast.netlify.app/"
+        class="select-none"
       ></vue-disqus>
     </div>
 
