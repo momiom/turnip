@@ -30,8 +30,8 @@
           となるでしょう。
         </p>
         <p class="fade">
-          <span class="text-money-blue"> {{ maxPrice }}ベル </span>
-          に近ければ売ってしまったほうがよいかもしれません。
+          <span class="text-money-blue"> {{ maxPrice }}ベル</span
+          >に近ければ売ってしまったほうがよいかもしれません。
         </p>
       </template>
 
