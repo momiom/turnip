@@ -1,21 +1,52 @@
 <template>
-  <div>
-    <turnip-prediction-chart :chart-data="chartData" :options="options" />
+  <div class="grid grid-cols-1 gap-4 p-6 bg-main-green rounded-lg">
+    <turnip-prediction-chart
+      :chart-data="chartData"
+      :options="options"
+      class="bg-main-yellow p-4 rounded-lg"
+    />
+
+    <div
+      class="bg-main-yellow p-4 rounded-lg text-main-brown grid grid-cols-1 gap-2"
+    >
+      <div>
+        <h3>カブ価の範囲</h3>
+        <p-br-opt
+          class="pl-4 text-sm"
+          :content="
+            `|-ある曜日の-||-午前・午後の-||-最低カブ価と-||-最高カブ価です。-|<br />
+          |-例えば-||-木曜日の-||-午後の-||-カブ価が-||-84ベル〜-||-608ベルの-||-予報だったとき、-||-実際の-||-カブ価は-||-84ベル〜-||-608ベルの間の-||-どれかになります。-|`
+          "
+        />
+      </div>
+
+      <div>
+        <h3>最低保証カブ価</h3>
+        <p-br-opt
+          class="pl-4 text-sm"
+          :content="
+            `|-月曜日〜-||-土曜日の-||-最低カブ価のなかで、-||-最も高いカブ価のことです。-|<br />
+          |-例えば-||-最低保証カブ価が-||-84ベルの-||-予報だったとき、-||-カブ価の-||-範囲が-||-「84ベル〜」のときに-||-カブを-||-売るのが-||-一番お得です。-|`
+          "
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import TurnipPredictionChart from './TurnipChart/TurnipPredictionChart'
+import PBrOpt from '~/components/PBrOpt'
 
 import {
   possiblePatterns,
   patternReducer,
-  // averageReducer,
   minWeekReducer
 } from '~/utils/patterns'
 
 export default {
   components: {
-    TurnipPredictionChart
+    TurnipPredictionChart,
+    PBrOpt
   },
 
   model: {
@@ -46,8 +77,56 @@ export default {
         maintainAspectRatio: false,
         showLines: true,
         tooltips: {
+          enabled: true,
           intersect: false,
-          mode: 'index'
+          mode: 'index',
+          callbacks: {
+            title(tooltipItem, data) {
+              return tooltipItem[0].xLabel
+            },
+            label(tooltipItems, data) {
+              const currentDatasets = data.datasets[tooltipItems.datasetIndex]
+              const label = currentDatasets.label
+
+              // カブ価の範囲は最低〜最大の表記にする
+              if (label === 'カブ価の範囲') {
+                const min = currentDatasets.data[tooltipItems.index]
+                const max =
+                  data.datasets[tooltipItems.datasetIndex + 1].data[
+                    tooltipItems.index
+                  ]
+                return `${label}  ${min}ベル 〜 ${max}ベル`
+              }
+
+              // 最低カブ価は非表示
+              const newLabel = label === '最低カブ価' ? '' : label
+
+              return newLabel === ''
+                ? ''
+                : `${newLabel}  ${tooltipItems.yLabel}ベル`
+            },
+            labelColor(tooltipItems, chart) {
+              const data = chart.data.datasets[tooltipItems.datasetIndex]
+              const label = data.label
+              if (label === '購入カブ価') {
+                return {
+                  borderColor: '#7B6C53',
+                  backgroundColor: '#7B6C53'
+                }
+              }
+              if (label === '最低保証カブ価') {
+                return {
+                  borderColor: '#007D75',
+                  backgroundColor: '#007D75'
+                }
+              }
+
+              return {
+                borderColor: data.borderColor,
+                backgroundColor: data.backgroundColor
+              }
+            }
+          }
         },
         scales: {
           y: {
@@ -64,6 +143,15 @@ export default {
           line: {
             cubicInterpolationMode: 'monotone'
           }
+        },
+        legend: {
+          display: true,
+          labels: {
+            filter(items, chartData) {
+              // 最低カブ価を非表示
+              return items.text !== '最低カブ価'
+            }
+          }
         }
       }
     }
@@ -74,7 +162,34 @@ export default {
 
       const result = [
         {
-          label: '購入価格',
+          label: 'カブ価',
+          data: Array.from(
+            { length: 12 },
+            (v, i) => this.currentPrices[i + 1] || null
+          ),
+          fill: false,
+          backgroundColor: '#EF8341',
+          borderColor: '#EF8341'
+        },
+        {
+          label: 'カブ価の範囲', // 最高カブ価
+          data: minMaxData[1] || new Array(12).fill(null),
+          backgroundColor: 'rgba(165, 213, 165, 0.7)',
+          borderColor: 'rgba(0, 0, 0, 0)',
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          fill: 2
+        },
+        {
+          label: '最低カブ価', // 最低カブ価 legend非表示
+          data: minMaxData[0] || new Array(12).fill(null),
+          borderColor: 'rgba(0, 0, 0, 0)',
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          fill: false
+        },
+        {
+          label: '購入カブ価',
           data: new Array(12).fill(this.currentPrices[0] || null),
           fill: true,
           backgroundColor: 'transparent',
@@ -84,7 +199,7 @@ export default {
           borderDash: [5, 15]
         },
         {
-          label: '最低保証価格',
+          label: '最低保証カブ価',
           data: new Array(12).fill(minWeekValue || null),
           fill: true,
           backgroundColor: 'transparent',
@@ -92,43 +207,6 @@ export default {
           pointRadius: 0,
           pointHoverRadius: 0,
           borderDash: [3, 6]
-        },
-        {
-          label: '価格',
-          data: Array.from(
-            { length: 12 },
-            (v, i) => this.currentPrices[i + 1] || null
-          ),
-          fill: false,
-          backgroundColor: '#EF8341',
-          borderColor: '#EF8341'
-        },
-        // {
-        //   label: '平均価格',
-        //   data: avgData[0]
-        //     ? avgData[0].map(Math.trunc)
-        //     : new Array(12).fill(null),
-        //   backgroundColor: '#F0E16F',
-        //   borderColor: '#F0E16F',
-        //   pointRadius: 0,
-        //   fill: false
-        // },
-        {
-          label: '最低価格',
-          data: minMaxData[0] || new Array(12).fill(null),
-          borderColor: '#A5D5A5',
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          fill: false
-        },
-        {
-          label: '最大価格',
-          data: minMaxData[1] || new Array(12).fill(null),
-          backgroundColor: '#A5D5A5',
-          borderColor: '#A5D5A5',
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          fill: 3
         }
       ]
 
@@ -160,8 +238,6 @@ export default {
 
       const minMaxPattern = patternReducer(patterns)
       const minMaxData = this.$zip(...minMaxPattern)
-      // const avgPattern = patternReducer(patterns, averageReducer)
-      // const avgData = zip(...avgPattern)
       const [minWeekValue] = patternReducer(patterns, minWeekReducer)
 
       this.updateTurnipPattern(patterns, minMaxData, minWeekValue)

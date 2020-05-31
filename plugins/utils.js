@@ -50,9 +50,16 @@ const zip = (...args) => {
 
 const isUndefined = (x) => typeof x === 'undefined'
 
+const brOpt = (str) => {
+  const regex = /\|-(.+?)-\|/g
+  const replacement = '<span style="display: inline-block;">$1</span>'
+  return str.replace(regex, replacement)
+}
+
 export default ({}, inject) => {
   inject('debounce', debounce)
   inject('throttle', throttle)
   inject('zip', zip)
   inject('isUndefined', isUndefined)
+  inject('brOpt', brOpt)
 }
