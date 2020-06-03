@@ -3,6 +3,6 @@ Todo:
   デザイン調整:
     ✔ chart @done(20-05-31 23:34)
     ✔ resultBoardのメッセージの改行 @done(20-06-03 20:03)
-    ☐ disqus
+    ✘ disqus @cancelled(20-06-04 07:55)
   機能:
   ✔ localstrage @done(20-05-25 08:23)

@@ -2,7 +2,6 @@
   <div class="container mx-auto px-4 py-4">
     <div class="grid grid-cols-1 gap-6">
       <div class="text-2xl text-center text-white whitespace-no-wrap title">
-        <!-- <img src="~/assets/img/title-bg.svg" alt="" /> -->
         <svg
           width="168"
           height="67"
