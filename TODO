@@ -1,7 +1,8 @@
 
 Todo:
   デザイン調整:
-    ☐ chart
+    ✔ chart @done(20-05-31 23:34)
+    ✔ resultBoardのメッセージの改行 @done(20-06-03 20:03)
     ☐ disqus
   機能:
   ✔ localstrage @done(20-05-25 08:23)

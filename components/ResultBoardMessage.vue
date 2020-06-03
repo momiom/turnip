@@ -2,49 +2,72 @@
   <div class="text-main-brown grid grid-cols-1 gap-4">
     <template v-if="patternType === -1">
       <p class="fade">
-        すみません。まだはっきりと予報が出せません。<br />
-        もう少し先のカブ価がわかったら教えてください。
+        <span style="display: inline-block;">すみません。</span
+        ><span style="display: inline-block;">まだはっきりと</span
+        ><span style="display: inline-block;">予報が出せません。</span><br />
+        <span style="display: inline-block;">もう少し</span
+        ><span style="display: inline-block;">先のカブ価が</span
+        ><span style="display: inline-block;">わかったら</span
+        ><span style="display: inline-block;">教えてください。</span>
       </p>
       <p class="fade">
-        参考までに、いちおう予報の詳細を下に出しておきますね。
+        <span style="display: inline-block;">参考までに、</span
+        ><span style="display: inline-block;">いちおう</span
+        ><span style="display: inline-block;">予報の詳細を</span
+        ><span style="display: inline-block;">下に出して</span
+        ><span style="display: inline-block;">おきますね。</span>
       </p>
     </template>
 
     <template v-else>
       <p class="fade">
-        今週のカブ価は<br />
+        <span style="display: inline-block;">今週の</span
+        ><span style="display: inline-block;">カブ価は</span><br />
         <span class="emphasize text-attention-pink text-xl">
           {{ patternTypeMsg }}
         </span>
-        するでしょう。
+        <span style="display: inline-block;">するでしょう。</span>
       </p>
 
       <template v-if="patternType === 0">
         <p class="fade">
-          2日おきくらいで上下をくりかえし、<br />
-          {{ highSpikeDayMsg }}には<br />
+          <span style="display: inline-block;">2日おきくらいで</span
+          ><span style="display: inline-block;">上下を</span
+          ><span style="display: inline-block;">くりかえし、</span><br />
+          <span style="display: inline-block;">{{ highSpikeDayMsg }}には</span
+          ><br />
           <span class="emphasize">
-            最低<span class="text-money-blue text-xl"> {{ minPrice }}ベル</span>
-            最高<span class="text-money-blue text-xl"> {{ maxPrice }}ベル</span>
+            <span style="display: inline-block;">最低</span
+            ><span class="text-money-blue text-xl"> {{ minPrice }}ベル</span>
+            <span style="display: inline-block;">最高</span
+            ><span class="text-money-blue text-xl"> {{ maxPrice }}ベル</span>
           </span>
-          となるでしょう。
+          <span style="display: inline-block;">となるでしょう。</span>
         </p>
         <p class="fade">
-          <span class="text-money-blue"> {{ maxPrice }}ベル</span
-          >に近ければ売ってしまったほうがよいかもしれません。
+          <span class="text-money-blue"> {{ maxPrice }}ベル</span>に<span
+            style="display: inline-block;"
+            >近ければ</span
+          ><span style="display: inline-block;">売ってしまったほうが</span
+          ><span style="display: inline-block;">よいかもしれません。</span>
         </p>
       </template>
 
       <template v-if="patternType === 1 || patternType === 3">
         <p class="fade">
-          {{ highSpikeDayMsg }}にはピークを迎え<br />
+          <span style="display: inline-block;">{{ highSpikeDayMsg }}には</span
+          >ピークを迎え<br />
           <span class="emphasize">
-            最低でも
-            <span class="text-money-blue text-xl"> {{ minPrice }}ベル</span>
-            最高では
-            <span class="text-money-blue text-xl"> {{ maxPrice }}ベル</span>
+            最低でも<span class="text-money-blue text-xl">
+              {{ minPrice }}ベル</span
+            >
           </span>
-          まで上昇するでしょう。
+          <span class="emphasize">
+            最高では<span class="text-money-blue text-xl">
+              {{ maxPrice }}ベル</span
+            >
+          </span>
+          <span style="display: inline-block;">まで上昇するでしょう。</span>
         </p>
       </template>
 
@@ -61,18 +84,37 @@
 
       <template v-if="maxPrice > 660">
         <p class="fade">
-          ...と予報はしてみましたが。。<br />
-          カブ価は<span class="text-money-blue">660ベル</span
-          >より上がることはないはずです。<br />
-          購入価格やどこかの曜日の価格を間違えてはいないですか？
+          <span style="display: inline-block;">...と</span
+          ><span style="display: inline-block;">予報は</span
+          ><span style="display: inline-block;">してみましたが。。</span><br />
+          <span style="display: inline-block;">カブ価は</span
+          ><span class="text-money-blue">660ベル</span>より<span
+            style="display: inline-block;"
+            >上がることは</span
+          ><span style="display: inline-block;">ないはずです。</span><br />
+          <span style="display: inline-block;">購入価格や</span
+          ><span style="display: inline-block;">どこかの</span
+          ><span style="display: inline-block;">曜日の</span
+          ><span style="display: inline-block;">価格を</span
+          ><span style="display: inline-block;">間違えては</span
+          ><span style="display: inline-block;">いないですか？</span>
         </p>
         <p class="fade">
-          いちおう予報の詳細を下に出しておきますが、<br />
-          正しくないかもしれません。
+          <span style="display: inline-block;">いちおう</span
+          ><span style="display: inline-block;">予報の</span
+          ><span style="display: inline-block;">詳細を</span
+          ><span style="display: inline-block;">下に</span
+          ><span style="display: inline-block;">出しておきますが、</span><br />
+          <span style="display: inline-block;">正しくない</span
+          ><span style="display: inline-block;">かもしれません。</span>
         </p>
       </template>
       <template v-else>
-        <p class="fade">それでは詳しいカブ価をみてみましょう。</p>
+        <p class="fade">
+          <span style="display: inline-block;">それでは</span
+          ><span style="display: inline-block;">詳しいカブ価を</span
+          ><span style="display: inline-block;">みてみましょう。</span>
+        </p>
       </template>
     </template>
   </div>
