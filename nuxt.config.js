@@ -49,7 +49,14 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-    'nuxt-webfontloader'
+    'nuxt-webfontloader',
+    [
+      '@nuxtjs/google-gtag',
+      {
+        id: process.env.GAID,
+        debug: true
+      }
+    ]
   ],
   devModules: ['@nuxtjs/tailwindcss'],
   /*
@@ -99,5 +106,8 @@ export default {
         compress: { drop_console: true }
       }
     }
+  },
+  env: {
+    GAID: process.env.GAID
   }
 }

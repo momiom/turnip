@@ -105,6 +105,8 @@ export default {
   created() {
     // currentPricesをdebounceする関数を登録
     this.debouncedCurrentPrices = this.$debounce(this.updateCurrentPrices, 800)
+
+    console.debug('process.env.GAID: ', process.env.GAID)
   },
 
   mounted() {
