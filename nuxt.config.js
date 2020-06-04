@@ -137,8 +137,5 @@ export default {
         compress: { drop_console: true }
       }
     }
-  },
-  env: {
-    GAID: process.env.GAID
   }
 }
