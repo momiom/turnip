@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const title = 'カブ価予報 | あつまれど うぶつの森'
 const description =
   '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。'
@@ -87,7 +89,7 @@ export default {
       '@nuxtjs/google-gtag',
       {
         id: process.env.GAID,
-        debug: true
+        debug: false
       }
     ]
   ],

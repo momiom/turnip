@@ -27,6 +27,7 @@
             type="tel"
             :value="prices[n][m - 1]"
             @input="updatePrices($event, n, m)"
+            @blur="blurPriceInput($event, n, m)"
           />
         </div>
       </div>
@@ -127,6 +128,26 @@ export default {
         prices[n][m - 1] = value
       }
       this.prices = prices
+    },
+    blurPriceInput(e, n, m) {
+      let value = parseInt(e.target.value)
+      if (isNaN(value)) {
+        value = 0
+      }
+
+      let eventLabel = ''
+      if (n === 0) {
+        eventLabel = '購入カブ価'
+      } else {
+        eventLabel =
+          this.weekDay[n - 1] + '曜日:' + ((m - 1) % 2 === 0 ? '午前' : '午後')
+      }
+
+      this.$gtag('event', 'カブ価入力', {
+        event_category: 'Turnip Prices',
+        event_label: eventLabel,
+        value
+      })
     }
   }
 }
