@@ -3,7 +3,7 @@
     <turnip-prediction-chart
       :chart-data="chartData"
       :options="options"
-      class="bg-main-yellow p-4 rounded-lg"
+      class="bg-main-yellow p-4 rounded-lg select-none"
     />
 
     <div

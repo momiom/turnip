@@ -6,7 +6,7 @@
       class="col-span-2 sm:col-span-3 md:col-span-6 p-2 bg-main-yellow rounded-lg"
     >
       <div class="text-sm text-main-brown">
-        購入価格
+        購入カブ価
       </div>
       <input
         class="input"
