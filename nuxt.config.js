@@ -3,7 +3,7 @@ require('dotenv').config()
 const title = 'カブ価予報 | あつまれど うぶつの森'
 const description =
   '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。'
-const url = 'https://turnip-forecast.netlify.app/'
+const url = 'https://turnip-forecast.netlify.app'
 const ogImage = `${url}/ogp.png`
 
 export default {
