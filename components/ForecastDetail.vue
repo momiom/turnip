@@ -10,7 +10,7 @@
       class="bg-main-yellow p-4 rounded-lg text-main-brown grid grid-cols-1 gap-2"
     >
       <div>
-        <h3>カブ価の範囲</h3>
+        <h3>カブ価の予報範囲</h3>
         <p-br-opt
           class="pl-4 text-sm"
           :content="
@@ -89,7 +89,7 @@ export default {
               const label = currentDatasets.label
 
               // カブ価の範囲は最低〜最大の表記にする
-              if (label === 'カブ価の範囲') {
+              if (label === 'カブ価の予報範囲') {
                 const min = currentDatasets.data[tooltipItems.index]
                 const max =
                   data.datasets[tooltipItems.datasetIndex + 1].data[
@@ -172,7 +172,7 @@ export default {
           borderColor: '#EF8341'
         },
         {
-          label: 'カブ価の範囲', // 最高カブ価
+          label: 'カブ価の予報範囲', // 最高カブ価
           data: minMaxData[1] || new Array(12).fill(null),
           backgroundColor: 'rgba(165, 213, 165, 0.7)',
           borderColor: 'rgba(0, 0, 0, 0)',
