@@ -122,7 +122,7 @@ export default {
       lang: 'ja',
       theme_color: '#FFF9E2',
       background_color: '#FFF9E2',
-      display: 'fullscreen'
+      display: 'standalone'
     }
   },
 
