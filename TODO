@@ -5,8 +5,11 @@ Todo:
     ✔ resultBoardのメッセージの改行 @done(20-06-03 20:03)
     ✘ disqus @cancelled(20-06-04 07:55)
     ✔ OGP設定 @done(20-06-05 08:40)
-    ☐ OGP本番確認
+    ✔ OGP本番確認 @done(20-06-10 07:47)
+    ✔ disqus外し @done(20-06-12 08:42)
+    ✔ リアクションボタン実装 localstrageへの保存・Analyticsイベント設定 @done(20-06-15 08:06)
   機能:
   ✔ localstrage @done(20-05-25 08:23)
   ✔ analytics導入 @done(20-06-05 08:36)
   ✔ analytics event設定 @done(20-06-06 19:15)
+  ☐ iOS pwa ホームに追加ポップアップ追加

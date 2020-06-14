@@ -47,12 +47,7 @@
         :current-prices="debounceCurrentPrices"
       />
 
-      <vue-disqus
-        shortname="turnip-forecast"
-        identifier="index"
-        url="https://turnip-forecast.netlify.app/"
-        class="select-none"
-      ></vue-disqus>
+      <reaction-board :reactions="reactions" @click="updateReaction($event)" />
     </div>
 
     <delete-confirm-modal
@@ -68,6 +63,7 @@ import TurnipPrices from '~/components/TurnipPrices'
 import ResultBoard from '~/components/ResultBoard'
 import ForecastDetail from '~/components/ForecastDetail'
 import ResultBoardPanel from '~/components/ResultBoardPanel'
+import ReactionBoard from '~/components/ReactionBoard'
 import DeleteConfirmModal from '~/components/DeleteConfirmModal'
 
 export default {
@@ -76,6 +72,7 @@ export default {
     ResultBoard,
     ForecastDetail,
     ResultBoardPanel,
+    ReactionBoard,
     DeleteConfirmModal
   },
   data() {
@@ -88,7 +85,44 @@ export default {
         maxPrice: 0
       },
       debounceCurrentPrices: [],
-      showDeleteConfirm: false
+      showDeleteConfirm: false,
+      reactions: [
+        {
+          id: 1,
+          text: '👍 いいね！',
+          isActive: false
+        },
+        {
+          id: 2,
+          text: '👎 う〜ん',
+          isActive: false
+        },
+        {
+          id: 3,
+          text: '😝 おもしろい！',
+          isActive: false
+        },
+        {
+          id: 4,
+          text: '😍 だいすき！',
+          isActive: false
+        },
+        {
+          id: 5,
+          text: '😦 へんな予報',
+          isActive: false
+        },
+        {
+          id: 6,
+          text: '😤 ぜんぜん当たんないよ！',
+          isActive: false
+        },
+        {
+          id: 7,
+          text: '😥 よくわかんない。。',
+          isActive: false
+        }
+      ]
     }
   },
 
@@ -125,12 +159,53 @@ export default {
     },
 
     initLocalstrage() {
+      // 入力カブ価のリストア
       const currentPrices = JSON.parse(localStorage.getItem('currentPrices'))
       if (currentPrices) {
         this.currentPrices = currentPrices
       } else {
         this.currentPrices = Array.from({ length: 13 }, () => '')
       }
+
+      // リアクションのリストア
+      const reactionId = localStorage.getItem('reactionId')
+      if (!isNaN(parseInt(reactionId))) {
+        this.updateReaction(parseInt(reactionId), true)
+      }
+    },
+
+    updateReaction(id, init = false) {
+      const curr = this.reactions.filter((r) => {
+        return r.id === id
+      })
+      if (curr && curr.length > 0) {
+        if (!curr[0].isActive) {
+          // idの登録・更新
+          localStorage.setItem('reactionId', id)
+          if (!init) {
+            this.$gtag('event', 'リアクションON', {
+              event_category: 'リアクション',
+              event_label: curr[0].text,
+              value: id
+            })
+          }
+        } else {
+          // idの削除
+          localStorage.removeItem('reactionId')
+          if (!init) {
+            this.$gtag('event', 'リアクションOFF', {
+              event_category: 'リアクション',
+              event_label: curr[0].text,
+              value: id
+            })
+          }
+        }
+      }
+
+      this.reactions = this.reactions.map((r) => {
+        const isActive = r.id === id ? !r.isActive : false
+        return { id: r.id, text: r.text, isActive }
+      })
     }
   }
 }
