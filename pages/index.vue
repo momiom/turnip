@@ -55,6 +55,8 @@
       @close="showDeleteConfirm = false"
       @clearPrices="clearPrices"
     />
+
+    <pwa-promotion-modal v-model="showPwaPromotion" />
   </div>
 </template>
 
@@ -65,6 +67,7 @@ import ForecastDetail from '~/components/ForecastDetail'
 import ResultBoardPanel from '~/components/ResultBoardPanel'
 import ReactionBoard from '~/components/ReactionBoard'
 import DeleteConfirmModal from '~/components/DeleteConfirmModal'
+import PwaPromotionModal from '~/components/PwaPromotionModal'
 
 export default {
   components: {
@@ -73,7 +76,8 @@ export default {
     ForecastDetail,
     ResultBoardPanel,
     ReactionBoard,
-    DeleteConfirmModal
+    DeleteConfirmModal,
+    PwaPromotionModal
   },
   data() {
     return {
@@ -122,7 +126,8 @@ export default {
           text: '😥 よくわかんない。。',
           isActive: false
         }
-      ]
+      ],
+      showPwaPromotion: false
     }
   },
 
@@ -133,6 +138,10 @@ export default {
 
       // 設定時間後にthis.debounceCurrentPricesを更新する関数を呼び出す関数を呼び出し
       this.debouncedCurrentPrices()
+    },
+
+    showPwaPromotion() {
+      localStorage.setItem('pwaPromotion', false)
     }
   },
 
@@ -144,6 +153,13 @@ export default {
   mounted() {
     // localstrageの初期化
     this.initLocalstrage()
+
+    // iOSの場合ホーム画面に追加を促す
+    if (this.$isiOS()) {
+      // 条件: query paramにstandaloneがついていない && localStrageにpwaPromotionが存在しない
+      this.showPwaPromotion =
+        !this.$route.query.standalone && !localStorage.getItem('pwaPromotion')
+    }
   },
 
   methods: {

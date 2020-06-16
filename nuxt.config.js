@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const title = 'カブ価予報 | あつまれど うぶつの森'
+const shortTitle = 'カブ価予報'
 const description =
   '今週のカブ価予報をおとどけします。火曜日の午後ごろまで入力するとそれなりなカブ価予報となるでしょう。'
 const url = 'https://turnip-forecast.netlify.app/'
@@ -52,6 +53,10 @@ export default {
         hid: 'twitterImage',
         name: 'twitter:image:src',
         content: ogImage
+      },
+      {
+        name: 'apple-mobile-web-app-status-bar-style',
+        content: 'black-translucent'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -115,6 +120,7 @@ export default {
     },
     manifest: {
       name: title,
+      short_name: shortTitle,
       title,
       'og:title': title,
       description,
