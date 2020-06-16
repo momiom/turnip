@@ -56,10 +56,13 @@ const brOpt = (str) => {
   return str.replace(regex, replacement)
 }
 
+const isiOS = () => navigator.userAgent.indexOf('iPhone') > 0
+
 export default ({}, inject) => {
   inject('debounce', debounce)
   inject('throttle', throttle)
   inject('zip', zip)
   inject('isUndefined', isUndefined)
   inject('brOpt', brOpt)
+  inject('isiOS', isiOS)
 }
