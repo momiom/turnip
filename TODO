@@ -12,6 +12,8 @@ Todo:
   ✔ localstrage @done(20-05-25 08:23)
   ✔ analytics導入 @done(20-06-05 08:36)
   ✔ analytics event設定 @done(20-06-06 19:15)
-  iOS pwa:
-    ✔ ホームに追加ポップアップ追加 変な改行はlintのせいっぽい @done(20-06-17 08:41)
-    ✔ notch @done(20-06-17 08:41)
+    iOS pwa:
+      ✔ ホームに追加ポップアップ追加 変な改行はlintのせいっぽい @done(20-06-17 08:41)
+      ✔ notch @done(20-06-17 08:41)
+    reactions:
+      ☐ リアクション数の計測
