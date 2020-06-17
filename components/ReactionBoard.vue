@@ -3,7 +3,17 @@
     v-show="show"
     class="grid grid-cols-1 gap-4 p-4 rounded-lg text-main-brown"
   >
-    <p class="text-center">予報はいかがでしたか？</p>
+    <p class="text-center text-base">
+      予報はいかがでしたか？？
+      <br />
+      by
+      <a
+        href="https://twitter.com/acnh_kabuka"
+        target="_blank"
+        class="underline"
+        >@acnh_kabuka</a
+      >
+    </p>
     <div class="flex flex-wrap justify-around">
       <button
         v-for="reaction in reactions"
