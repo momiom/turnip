@@ -1,6 +1,6 @@
 # turnip_manager
 
-> My groundbreaking Nuxt.js project
+https://turnip-forecast.netlify.app/
 
 ## Build Setup
 
